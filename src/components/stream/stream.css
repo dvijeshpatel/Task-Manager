@@ -1,0 +1,18 @@
+.stream {
+    width: 30rem;
+    margin-left: 0.8rem;
+    background: #ebecf0;
+    border-radius: 0.2rem;
+    padding: 0 0.8rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.streamHeader {
+    height: 4rem;
+    padding: 0.8rem;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.6rem;
+}

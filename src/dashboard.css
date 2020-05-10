@@ -1,6 +1,12 @@
 .dashboard {
     display: flex;
+    align-items: flex-start;
     height: 100%;
-    padding: 20px 0px;
+    padding: 2rem 0px;
+    background: rgb(75, 191, 107);
 }
 
+.streamCreatorContainer {
+    width: 30rem;
+    margin-left: 0.8rem;
+}
