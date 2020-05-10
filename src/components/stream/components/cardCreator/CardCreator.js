@@ -4,12 +4,13 @@ import AddIcon from "@material-ui/icons/Add";
 
 import './cardCreator.css';
 
-import CardCreatorDialog, { cardCreatorDialogActions } from './CardCreatorDialog';
+import CardCreatorDialog, { cardCreatorDialogActions, MODES } from '../cardCreatorDailog';
 
 const cardCreatorActions = {
   OPEN_CARD_CREATOR: 'OPEN_CARD_CREATOR',
   ADD_CARD: 'ADD_CARD',
 }
+
 const CardCreator = props => {
   const { onAction } = props;
   const [isCardCreatorDialogOpen, setIsCardCreatorDialogOpen] = useState(false);
@@ -20,7 +21,7 @@ const CardCreator = props => {
         setIsCardCreatorDialogOpen(false);
         break;
       }
-      case cardCreatorDialogActions.ADD_CARD: {
+      case cardCreatorDialogActions.ON_SUBMIT: {
         onAction({ type: cardCreatorActions.ADD_CARD, payload: { content: payload.content }});
         break;
       }
@@ -37,7 +38,7 @@ const CardCreator = props => {
   },[])
 
   if(isCardCreatorDialogOpen) {
-    return <CardCreatorDialog onAction={handleAction}/>;
+    return <CardCreatorDialog onAction={handleAction} mode={MODES.CREATE}/>;
   };
 
 
