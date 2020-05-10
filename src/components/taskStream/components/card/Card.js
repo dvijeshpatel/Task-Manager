@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import './card.css';
+
 const Card = props => {
   const { content} = props;
-  return <div>{content}</div>;
+  return <div className="card">{content}</div>;
 };
 
 Card.propTypes = {
