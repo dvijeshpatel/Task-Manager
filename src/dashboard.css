@@ -6,22 +6,7 @@
     background: rgb(75, 191, 107);
 }
 
-.streamAdder {
+.streamCreatorContainer {
     width: 30rem;
-    height: 4rem;
-    padding: 0.8rem;
-    display: flex;
-    align-items: center;
-    color: #ffffff;
-    background: rgba(255, 255, 255, 0.25);
     margin-left: 0.8rem;
-    font-size: 1.6rem;
-    cursor: pointer;
-}
-
-.streamAdder:hover {
-    background: rgba(255, 255, 255, 0.35);;
-}
-.streamAdder__label {
-    margin-left: 0.4rem;
 }

@@ -1,7 +1,8 @@
 import React, { useCallback, useState } from "react";
 import PropTypes from 'prop-types';
-
 import AddIcon from "@material-ui/icons/Add";
+
+import './cardCreator.css';
 
 import CardCreatorDialog, { cardCreatorDialogActions } from './CardCreatorDialog';
 
@@ -20,7 +21,7 @@ const CardCreator = props => {
         break;
       }
       case cardCreatorDialogActions.ADD_CARD: {
-        onAction({ type: cardCreatorActions.ADD_CARD, payload: { content: payload.content }})
+        onAction({ type: cardCreatorActions.ADD_CARD, payload: { content: payload.content }});
         break;
       }
       case cardCreatorActions.OPEN_CARD_CREATOR: {
@@ -40,15 +41,14 @@ const CardCreator = props => {
   };
 
 
-  return (<div className="taskStreamFooter" onClick={handleOpenCardCreator}>
+  return (<div className="cardCreator" onClick={handleOpenCardCreator}>
     <AddIcon fontSize="large"/>
-    <div className="taskStreamFooter__label">Add another card</div>
+    <div className="cardCreator__label">Add another card</div>
   </div>);
 };
 
 CardCreator.propTypes = {
   onAction: PropTypes.func,
-  // className: PropTypes.string,
 }
 
 export { cardCreatorActions };

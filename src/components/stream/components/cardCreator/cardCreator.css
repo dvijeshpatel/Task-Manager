@@ -1,24 +1,4 @@
-.taskStream {
-    width: 30rem;
-    margin-left: 0.8rem;
-    background: #ebecf0;
-    border-radius: 0.2rem;
-    padding: 0 0.8rem;
-    display: flex;
-    flex-direction: column;
-}
-
-.taskHeader {
-    height: 4rem;
-    padding: 0.8rem;
-    display: flex;
-    align-items: center;
-    font-weight: bold;
-    font-size: 1.6rem;
-}
-
-
-.taskStreamFooter {
+.cardCreator {
     height: 4rem;
     padding: 0.8rem;
     display: flex;
@@ -30,19 +10,20 @@
     cursor: pointer;
 }
 
-.taskStreamFooter:hover {
+.cardCreator:hover {
     color: #172b4d;
     background: rgba(9,30,66,0.1);
 }
 
-.taskStreamFooter__label {
+.cardCreator__label {
     margin-left: 0.4rem;
 }
 
-.cardCreator {
+.cardCreatorDialog {
     padding: 0.8rem 0;
 }
-.cardCreator__content {
+
+.cardCreatorDialog__content {
     min-height: 6rem;
     width: 100%;
     padding: 0.8rem;
@@ -54,12 +35,12 @@
     font-size: 1.3rem;
 }
 
-.cardCreator__footer {
+.cardCreatorDialog__footer {
     display: flex;
     align-items: center;
 }
 
-.cardCreator__submit {
+.cardCreatorDialog__submit {
     background: #5aac44;
     font-weight: 400;
     color: #ffffff;
@@ -70,7 +51,7 @@
     font-size: 1.3rem;
 }
 
-.cardCreator__close {
+.cardCreatorDialog__close {
     margin-left: 0.8rem;
     cursor: pointer;
 }

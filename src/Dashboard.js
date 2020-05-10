@@ -1,12 +1,10 @@
 import React, { useCallback, useState } from 'react';
+import uniqid from 'uniqid';
+
 import './dashboard.css';
 
-import AddIcon from "@material-ui/icons/Add";
-
-import StreamCreator from './StreamCreator';
-import TaskStream, { taskStreamActions }   from './components/taskStream';
-
-const TASK_STREAMS = [{ name: 'To Do'}];
+import StreamCreator, { streamCreatorActions } from './components/streamCreator';
+import Stream, { streamActions }   from './components/stream';
 
 const CARDS = [
   { content: 'You can also see board activity, change the background and more'},
@@ -15,30 +13,34 @@ const CARDS = [
   { content: 'You can also see board activity, change the background and more'},
 ]
 const DASHBOARD = {
-  taskStreams: [{ id: '1', name: 'To Do', cards: CARDS  }]
+  streams: [{ id: '1', name: 'To Do', cards: CARDS  }]
 }
 
-const dashboardActions = {
-  ADD_TASK_STREAM: 'ADD_TASK_STREAM',
-}
 const Dashboard = props => {
-  const [ taskStreams, setTaskStream ] = useState(DASHBOARD.taskStreams);
+  const [ streams, setStream ] = useState(DASHBOARD.streams);
   const handleAction = useCallback(action => {
     const { type, payload } = action;
-    if(type === taskStreamActions.ON_TASK_STREAM_CHANGE) {
-        setTaskStream( prevTaskStreams => {
+    switch (type) {
+      case streamActions.ON_STREAM_CHANGE: {
+        setStream(prevStreams => {
           const { id } = payload;
-          const streamIndex = taskStreams.findIndex(taskStream => taskStream.id === id);
-          if(streamIndex !== -1) {
-            return [...prevTaskStreams.slice(0, streamIndex), { ...prevTaskStreams[streamIndex], ...payload }, ...prevTaskStreams.slice(streamIndex + 1)];
+          const streamIndex = prevStreams.findIndex(stream => stream.id === id);
+          if (streamIndex !== -1) {
+            return [...prevStreams.slice(0, streamIndex), { ...prevStreams[streamIndex], ...payload }, ...prevStreams.slice(streamIndex + 1)];
           }
-          return prevTaskStreams;
+          return prevStreams;
         });
+        break;
       }
-    }, []);
+      case streamCreatorActions.ADD_STREAM: {
+        const { name } =payload;
+        setStream( prevStreams => [...prevStreams, { id: uniqid(), name, cards: []}]);
+      }
+    }
+  }, []);
   return <div className="dashboard">
-    {taskStreams.map(taskStream => <TaskStream key={taskStream.id} {...taskStream} onAction={handleAction}/>)}
-    <StreamCreator/>
+    {streams.map(stream => <Stream key={stream.id} {...stream} onAction={handleAction}/>)}
+    <div className="streamCreatorContainer"><StreamCreator onAction={handleAction}/></div>
   </div>
 };
 

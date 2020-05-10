@@ -22,11 +22,11 @@ const CardCreatorDialog = props => {
     setContent(event.currentTarget.value);
   },[]);
 
-  return <div className="cardCreator">
-    <textarea className="cardCreator__content" placeholder="Please Enter Description.." value={content} onChange={handleChange}/>
-    <div className="cardCreator__footer">
-      <button className="cardCreator__submit" onClick={handleAddCard}> Add Card</button>
-      <CloseIcon className="cardCreator__close" fontSize="large" onClick={handleCloseCardCreator}/>
+  return <div className="cardCreatorDialog">
+    <textarea className="cardCreatorDialog__content" placeholder="Please Enter Description.." value={content} onChange={handleChange}/>
+    <div className="cardCreatorDialog__footer">
+      <button className="cardCreatorDialog__submit" onClick={handleAddCard}> Add Card</button>
+      <CloseIcon className="cardCreatorDialog__close" fontSize="large" onClick={handleCloseCardCreator}/>
      </div>
     </div>;
 };
