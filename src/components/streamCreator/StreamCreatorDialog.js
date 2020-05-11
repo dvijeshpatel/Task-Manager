@@ -17,7 +17,7 @@ const StreamCreatorDialog = props => {
   },[onAction]);
 
   const handleAddStream = useCallback(() => {
-    onAction({ type: streamCreatorDialogActions.CLOSE_CARD_CREATOR});
+    onAction({ type: streamCreatorDialogActions.CLOSE_STREAM_CREATOR});
     onAction({ type: streamCreatorDialogActions.ADD_STREAM, payload: { name }});
   }, [name, onAction]);
 

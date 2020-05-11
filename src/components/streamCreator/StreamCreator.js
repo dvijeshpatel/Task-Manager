@@ -26,6 +26,7 @@ const StreamCreator = props => {
       }
       case streamCreatorDialogActions.ADD_STREAM: {
         onAction({ type: streamCreatorActions.ADD_STREAM, payload: { name: payload.name }});
+        break;
       }
       case streamCreatorActions.OPEN_STREAM_CREATOR: {
         setIsStreamCreatorDialogOpen(true);
