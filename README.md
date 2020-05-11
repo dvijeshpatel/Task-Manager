@@ -2,7 +2,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 First Install `Node` and `yarn` 
 
-##Install Dependencies for Project 
+## Install Dependencies for Project 
 
 ###  `yarn install`
 
