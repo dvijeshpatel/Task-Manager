@@ -61,7 +61,7 @@ const Card = props => {
 };
 
 Card.propTypes = {
-  id: PropTypes.string,
+  id: PropTypes.string.isRequired,
   content: PropTypes.string,
   onAction: PropTypes.func,
 };
