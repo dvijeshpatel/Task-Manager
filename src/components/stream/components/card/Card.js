@@ -38,15 +38,15 @@ const Card = props => {
       }
     }
 
-  },[]);
+  },[onAction]);
 
   const handleOpenCardEditor = useCallback(() => {
     handleAction({ type: cardActions.OPEN_CARD_EDITOR });
-  },[]);
+  },[handleAction]);
 
   const handleDeleteCard = useCallback(() => {
     handleAction({ type: cardActions.ON_DELETE_CARD });
-  },[]);
+  },[handleAction]);
 
   if(isCardEditorOpen) {
     return <CardCreatorDialog mode={MODES.EDIT} content={content} onAction={handleAction} />;

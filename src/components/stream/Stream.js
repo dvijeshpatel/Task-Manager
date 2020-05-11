@@ -7,6 +7,8 @@ import _map from 'lodash/map';
 import _filter from 'lodash/filter';
 import _reduce from 'lodash/reduce';
 
+import DroppableWrapper from '../../baseComponents/DroppableWrapper';
+import DraggableWrapper from '../../baseComponents/DraggableItemWrapper';
 import Card, { cardActions }  from './components/card';
 import CardCreator, { cardCreatorActions } from './components/cardCreator';
 
@@ -18,50 +20,50 @@ const streamActions = {
 
 const Stream = props => {
   const { stream, cards, onAction } = props;
-  const { id, name  } = stream;
-  const [_cards,  _setCards ] = useState(cards);
+  const { id : streamId , name  } = stream;
+
   const handleAction = useCallback(action => {
+    debugger;
     const { type, payload } = action;
     switch(type) {
       case cardCreatorActions.ADD_CARD: {
         const id = uniqid();
-        _setCards( prevCards => [...prevCards,  { id,  content: payload.content }]);
+        const newCards = [...cards,  { id,  content: payload.content }]
+        onAction({ type: streamActions.ON_CARDS_CHANGE, payload: { streamId, cards: newCards }});
         break;
       };
       case cardActions.ON_CHANGE_CARD: {
         const { id } = payload;
-        _setCards( prevCards => _reduce(prevCards, (accum, card) => {
-          if(card.id ===id) {
-            accum.push(payload);
+        const newCards = _reduce(cards, (accum, card) => {
+            if(card.id ===id) {
+              accum.push(payload);
+              return accum;
+            }
+            accum.push(card);
             return accum;
-          }
-          accum.push(card);
-          return accum;
-        },[]));
+          },[])
+        onAction({ type: streamActions.ON_CARDS_CHANGE, payload: { streamId, cards: newCards }});
         break;
       }
       case cardActions.ON_DELETE_CARD: {
         const { id } = payload;
-        _setCards( prevCards => _filter(prevCards, card => card.id!== id));
+        const newCards = _filter(cards, card => card.id!== id);
+        onAction({ type: streamActions.ON_CARDS_CHANGE, payload: { streamId, cards: newCards }});
+        break;
       };
     };
-  }, []);
+  }, [streamId, cards, onAction]);
 
-  useEffect(() => {
-    onAction({ type: streamActions.ON_CARDS_CHANGE, payload: { streamId: id, cards: _cards }});
-  },[id, _cards, onAction]);
-
-  const cardsNode = _map(_cards, (card, index) => <Card key={index} {...card} onAction={handleAction}/>);
+  const cardsNode = _map(cards, (card, index) => <DraggableWrapper draggableId={card.id} index={index} key={card.id}><Card {...card} onAction={handleAction}/></DraggableWrapper>);
 
   return (<div className="stream">
     <div className='streamHeader'>{name}</div>
-    {cardsNode}
+    <DroppableWrapper droppableId={streamId}>{cardsNode}</DroppableWrapper>
     <CardCreator onAction={handleAction}/>
   </div>);
 }
 
 Stream.propTypes = {
-  id: PropTypes.string,
   stream: PropTypes.object,
   cards: PropTypes.array,
   onAction: PropTypes.func,
