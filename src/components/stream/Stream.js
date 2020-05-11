@@ -12,38 +12,43 @@ const streamActions = {
 }
 
 const Stream = props => {
-  const { id, name, cards, onAction } = props;
-  const [streamCards, setStreamCards] = useState(cards);
+  const { id, name, cardsById, onAction } = props;
+  const [cardState, setCardState] = useState(cardsById);
 
   const handleAction = useCallback(action => {
     const { type, payload } = action;
     switch(type) {
       case cardCreatorActions.ADD_CARD: {
-        setStreamCards( prevCards => [...prevCards, { id: uniqid(), content: payload.content }]);
+        const id = uniqid();
+        setCardState( prevCardState => ({...prevCardState,  [id]: { id,  content: payload.content }}));
         break;
       };
       case cardActions.ON_CHANGE_CARD: {
         const { id} = payload;
-        setStreamCards( prevCards => {
-          const cardIndex = prevCards.findIndex(card => card.id === id);
-          if(cardIndex!==-1) {
-            return [...prevCards.slice(0, cardIndex), { ...prevCards[cardIndex], ...payload }, ...prevCards.slice(cardIndex + 1)];
+        setCardState(prevCardState => ({
+          ...prevCardState,
+          [id]: {
+            ...prevCardState[id],
+            ...payload,
           }
-          return prevCards;
-        });
+        }));
         break;
       }
       case cardActions.ON_DELETE_CARD: {
-        setStreamCards(prevCards => prevCards.filter(card => card.id !== payload.id));
-      }
+        const { id } = payload;
+        setCardState(prevCards =>  {
+          const { [id]: card, ...updatedCards } = prevCards;
+          return updatedCards;
+        });
+      };
     };
   }, []);
 
   useEffect(() => {
-    onAction({ type: streamActions.ON_STREAM_CHANGE, payload: { id, cards: streamCards }});
-  },[id, streamCards, onAction])
+    onAction({ type: streamActions.ON_STREAM_CHANGE, payload: { id, cardsById: cardState }});
+  },[id, cardState, onAction])
 
-  const cardsNode = streamCards.map((card, index) => <Card key={index} {...card} onAction={handleAction}/>);
+  const cardsNode = Object.values(cardState).map((card, index) => <Card key={index} {...card} onAction={handleAction}/>);
   return (<div className="stream">
     <div className='streamHeader'>{name}</div>
     {cardsNode}
@@ -54,12 +59,12 @@ const Stream = props => {
 Stream.propTypes = {
   id: PropTypes.string,
   name: PropTypes.string,
-  cards: PropTypes.array,
+  cardsById: PropTypes.object,
   onAction: PropTypes.func,
 };
 
 Stream.defaultProps = {
-  cards: [],
+  cardsById: {},
 };
 
 export { streamActions };
