@@ -5,6 +5,7 @@
     border-radius: 0.2rem;
     font-size: 1.3rem;
     position: relative;
+    min-height: 3rem;
 }
 
 .card:hover {

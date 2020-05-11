@@ -55,8 +55,10 @@ const Stream = props => {
   const cardsNode = _map(cards, (card, index) => <DraggableWrapper draggableId={card.id} index={index} key={card.id}><Card {...card} onAction={handleAction}/></DraggableWrapper>);
 
   return (<div className="stream">
-    <div className='streamHeader'>{name}</div>
-    <DroppableWrapper droppableId={streamId}>{cardsNode}</DroppableWrapper>
+    <div className='streamHeader'> <div className="streamHeaderContent">{name}</div></div>
+    <DroppableWrapper droppableId={streamId} className="streamContent">
+      {cardsNode}
+    </DroppableWrapper>
     <CardCreator onAction={handleAction}/>
   </div>);
 }
