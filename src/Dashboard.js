@@ -7,10 +7,9 @@ import StreamCreator, { streamCreatorActions } from './components/streamCreator'
 import Stream, { streamActions }   from './components/stream';
 
 const CARDS = [
-  { content: 'You can also see board activity, change the background and more'},
-  { content: 'You can also see board activity, change the background and more'},
-  { content: 'You can also see board activity, change the background and more'},
-  { content: 'You can also see board activity, change the background and more'},
+  { id: '1', content: 'You can also see board activity, change the background and more'},
+  { id: '2', content: 'You can also see board activity, change the background and more'},
+
 ]
 const DASHBOARD = {
   streams: [{ id: '1', name: 'To Do', cards: CARDS  }]
