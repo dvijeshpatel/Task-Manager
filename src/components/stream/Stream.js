@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import uniqid from 'uniqid';
 
-import _slice from 'lodash/slice';
 import _map from 'lodash/map';
 import _filter from 'lodash/filter';
 import _reduce from 'lodash/reduce';
@@ -23,7 +22,6 @@ const Stream = props => {
   const { id : streamId , name  } = stream;
 
   const handleAction = useCallback(action => {
-    debugger;
     const { type, payload } = action;
     switch(type) {
       case cardCreatorActions.ADD_CARD: {

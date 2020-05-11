@@ -1,4 +1,5 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import uniqid from 'uniqid';
 import { DragDropContext } from 'react-beautiful-dnd';
 
@@ -11,16 +12,20 @@ import Stream, { streamActions }   from './components/stream';
 
 import './dashboard.css';
 
-const DASHBOARD = {
-  streamsById: {
-  },
-  cardsById: {
-  },
+const DEFAULT_STATE = {
+  streamsById: {},
+  cardsById: {},
   streamOrder: [],
 }
 
 const Dashboard = props => {
-  const [ state, setState ] = useState(DASHBOARD);
+  const { state: initialState, updateState }  = props;
+  const [ state, setState ] = useState(initialState);
+
+  useEffect(() => {
+    updateState(state);
+  }, [state, updateState]);
+
   const handleAction = useCallback(action => {
     const { type, payload } = action;
     switch (type) {
@@ -47,7 +52,6 @@ const Dashboard = props => {
         break;
       }
       case streamCreatorActions.ADD_STREAM: {
-        debugger;
         const { name } =payload;
         const id = uniqid();
         setState( prevState => ({
@@ -64,7 +68,6 @@ const Dashboard = props => {
   }, []);
 
   const handleDragEnd = useCallback(result => {
-    debugger;
     const { destination, source, draggableId} = result;
     if(!destination) {
       return;
@@ -73,23 +76,48 @@ const Dashboard = props => {
       return;
     }
     setState(prevState => {
-      debugger;
-      const stream = _get(prevState, `streamsById.${source.droppableId}`);
-      const newCardIds = [..._get(stream, 'cardIds',[])];
-      newCardIds.splice(source.index, 1);
-      newCardIds.splice(destination.index, 0, draggableId);
-      const newStream = {
-        ...stream,
-        cardIds: newCardIds,
-      }
-      const newState = {
+      const startStream= _get(prevState, `streamsById.${source.droppableId}`);
+      const endStream = _get(prevState, `streamsById.${destination.droppableId}`);
+      if(startStream ===endStream) {
+        const stream = _get(prevState, `streamsById.${source.droppableId}`);
+        const newCardIds = [..._get(stream, 'cardIds',[])];
+        newCardIds.splice(source.index, 1);
+        newCardIds.splice(destination.index, 0, draggableId);
+        const newStream = {
+          ...stream,
+          cardIds: newCardIds,
+        }
+        const newState = {
+          ...prevState,
+          streamsById: {
+            ...prevState.streamsById,
+            [newStream.id]: newStream,
+          }
+        };
+        return newState;
+      };
+
+      const startStreamCardIds = [..._get(startStream, 'cardIds',[]) ];
+      startStreamCardIds.splice(source.index,1);
+      const newStartStream = {
+        ...startStream,
+        cardIds: startStreamCardIds,
+      };
+      const endStreamCardIds = [..._get(endStream, 'cardIds',[]) ];
+      endStreamCardIds.splice(destination.index,0,draggableId);
+      const newEndStream = {
+        ...endStream,
+        cardIds: endStreamCardIds,
+      };
+      return {
         ...prevState,
         streamsById: {
-          ...state.streamsById,
-          [newStream.id]: newStream,
+          ..._get(prevState, 'streamsById'),
+          [newStartStream.id]: newStartStream,
+          [newEndStream.id]: newEndStream,
         }
-      };
-      return newState;
+      }
+
     });
   },[])
   const streams = _map(state.streamOrder,streamId => {
@@ -102,5 +130,13 @@ const Dashboard = props => {
     <div className="streamCreatorContainer"><StreamCreator onAction={handleAction}/></div>
   </div>
 };
+
+Dashboard.propTypes = {
+  state: PropTypes.object,
+  updateState: PropTypes.func,
+}
+Dashboard.defaultProps = {
+  state: DEFAULT_STATE,
+}
 
 export default Dashboard;
