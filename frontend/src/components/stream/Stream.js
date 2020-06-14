@@ -11,7 +11,7 @@ import DraggableWrapper from '../../baseComponents/DraggableItemWrapper';
 import Card, { cardActions }  from './components/card';
 import CardCreator, { cardCreatorActions } from './components/cardCreator';
 
-import  './stream.css';
+import './stream.css';
 
 const streamActions = {
   ON_CARDS_CHANGE: 'ON_CARDS_CHANGE',
